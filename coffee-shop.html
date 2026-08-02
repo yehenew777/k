@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yehenew Coffee Shop — Roasted Daily</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #241610;
+    --surface: #33211a;
+    --surface-2: #40291f;
+    --cream: #f3e6d2;
+    --cream-dim: #cbb79f;
+    --gold: #c99a54;
+    --rust: #a8511f;
+    --line: rgba(243,230,210,0.14);
+    --radius: 4px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--cream);
+    font-family:'Work Sans', sans-serif;
+    line-height:1.55;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    margin:0 0 0.4em;
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;}
+  .wrap{max-width:1040px; margin:0 auto; padding:0 24px;}
+
+  /* NAV */
+  nav{
+    position:sticky; top:0; z-index:20;
+    background:rgba(36,22,16,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex; align-items:center; justify-content:space-between; padding:16px 24px;}
+  .brand{font-family:'Fraunces', serif; font-size:1.25rem; font-weight:700; letter-spacing:0.01em;}
+  .brand span{color:var(--gold);}
+  .navlinks{display:flex; gap:28px; font-size:0.92rem;}
+  .navlinks a{text-decoration:none; color:var(--cream-dim); transition:color .2s;}
+  .navlinks a:hover, .navlinks a:focus-visible{color:var(--gold);}
+
+  /* HERO */
+  .hero{
+    padding:96px 0 72px;
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:48px;
+    align-items:center;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    text-transform:uppercase; letter-spacing:0.14em; font-size:0.72rem;
+    color:var(--gold); font-weight:600; margin-bottom:14px; display:block;
+  }
+  .hero h1{font-size:clamp(2.4rem, 4.5vw, 3.4rem); line-height:1.05;}
+  .hero p{color:var(--cream-dim); font-size:1.05rem; max-width:38ch; margin:18px 0 28px;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--rust); color:var(--cream);
+    border:none; padding:13px 24px; border-radius:var(--radius);
+    font-family:'Work Sans'; font-size:0.95rem; font-weight:600;
+    cursor:pointer; text-decoration:none;
+    transition:transform .15s ease, background .2s;
+  }
+  .btn:hover{background:#c15f28; transform:translateY(-1px);}
+  .btn:focus-visible{outline:2px solid var(--gold); outline-offset:3px;}
+  .btn-ghost{
+    background:transparent; border:1px solid var(--line); color:var(--cream);
+    margin-left:12px;
+  }
+  .btn-ghost:hover{background:var(--surface); border-color:var(--gold);}
+
+  /* JEBENA SIGNATURE ILLUSTRATION */
+  .jebena-wrap{display:flex; justify-content:center; align-items:center;}
+  .steam{animation:rise 3.5s ease-in-out infinite;}
+  .steam.s2{animation-delay:1.1s;}
+  .steam.s3{animation-delay:2.2s;}
+  @keyframes rise{
+    0%{transform:translateY(0) scaleX(1); opacity:0;}
+    15%{opacity:0.6;}
+    50%{transform:translateY(-18px) scaleX(1.3); opacity:0.4;}
+    100%{transform:translateY(-38px) scaleX(0.8); opacity:0;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .steam{animation:none; opacity:0.35;}
+  }
+
+  section{padding:72px 0;}
+  .section-head{margin-bottom:40px; max-width:52ch;}
+  .section-head .eyebrow{margin-bottom:8px;}
+  .section-head p{color:var(--cream-dim); margin:0;}
+
+  /* MENU / ORDER */
+  .menu-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .item{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:20px 22px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+  }
+  .item-info h3{font-size:1.05rem; margin-bottom:4px;}
+  .item-info .desc{color:var(--cream-dim); font-size:0.86rem; margin-bottom:8px;}
+  .item-info .price{color:var(--gold); font-weight:600; font-size:0.92rem;}
+  .qty-row{display:flex; align-items:center; gap:10px; flex-shrink:0;}
+  .qty-btn{
+    width:30px; height:30px; border-radius:50%;
+    border:1px solid var(--line); background:var(--surface-2); color:var(--cream);
+    font-size:1rem; cursor:pointer; line-height:1;
+  }
+  .qty-btn:hover{border-color:var(--gold); color:var(--gold);}
+  .qty-val{min-width:16px; text-align:center; font-variant-numeric:tabular-nums;}
+
+  .order-summary{
+    margin-top:28px;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:24px 26px;
+  }
+  .order-summary h3{font-size:1.02rem;}
+  #cart-lines{list-style:none; padding:0; margin:14px 0; font-size:0.92rem;}
+  #cart-lines li{display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px dashed var(--line); color:var(--cream-dim);}
+  #cart-empty{color:var(--cream-dim); font-size:0.9rem; font-style:italic;}
+  .total-row{display:flex; justify-content:space-between; font-weight:600; padding-top:12px; margin-top:6px; border-top:1px solid var(--line);}
+  .total-row span:last-child{color:var(--gold);}
+  .order-form{margin-top:20px; display:flex; gap:10px; flex-wrap:wrap;}
+  input, textarea{
+    background:var(--bg); border:1px solid var(--line); border-radius:var(--radius);
+    color:var(--cream); padding:11px 13px; font-family:'Work Sans'; font-size:0.92rem;
+    flex:1; min-width:160px;
+  }
+  input:focus-visible, textarea:focus-visible{outline:2px solid var(--gold); outline-offset:1px; border-color:var(--gold);}
+  #order-confirm{margin-top:14px; color:var(--gold); font-size:0.9rem; display:none;}
+
+  /* COMMENTS */
+  .comment-form{display:flex; flex-direction:column; gap:12px; margin-bottom:36px; max-width:560px;}
+  .comment-form textarea{min-height:88px; resize:vertical;}
+  #comments-list{display:flex; flex-direction:column; gap:16px;}
+  .comment{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:18px 20px;
+  }
+  .comment .who{display:flex; justify-content:space-between; font-size:0.85rem; color:var(--gold); margin-bottom:6px; font-weight:600;}
+  .comment .who time{color:var(--cream-dim); font-weight:400;}
+  .comment p{margin:0; color:var(--cream-dim); font-size:0.93rem;}
+  #comments-empty{color:var(--cream-dim); font-style:italic; font-size:0.92rem;}
+
+  footer{border-top:1px solid var(--line); padding:32px 0; color:var(--cream-dim); font-size:0.85rem;}
+  footer .wrap{display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+
+  @media (max-width: 720px){
+    .hero{grid-template-columns:1fr; padding-top:64px;}
+    .jebena-wrap{order:-1;}
+    .menu-grid{grid-template-columns:1fr;}
+    .item{flex-direction:column; align-items:flex-start;}
+    .qty-row{align-self:flex-end;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">Yehenew <span>Coffee</span></div>
+    <div class="navlinks">
+      <a href="#order">Order</a>
+      <a href="#comments">Comments</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <div>
+    <span class="eyebrow">Roasted in small batches</span>
+    <h1>Coffee, poured slow and served warm.</h1>
+    <p>A neighborhood coffee shop built around one idea: every cup deserves the same care as the first pot ever brewed.</p>
+    <a href="#order" class="btn">Start an order</a>
+    <a href="#comments" class="btn btn-ghost">Read comments</a>
+  </div>
+  <div class="jebena-wrap">
+    <svg viewBox="0 0 240 260" width="220" height="240" role="img" aria-label="Illustration of a traditional coffee pot with rising steam">
+      <ellipse cx="120" cy="60" rx="6" ry="10" fill="var(--steam-color, var(--cream-dim))" opacity="0.5" class="steam"/>
+      <ellipse cx="105" cy="55" rx="5" ry="9" fill="var(--cream-dim)" opacity="0.4" class="steam s2"/>
+      <ellipse cx="135" cy="58" rx="5" ry="9" fill="var(--cream-dim)" opacity="0.4" class="steam s3"/>
+      <path d="M60 130 Q60 95 100 90 L140 90 Q180 95 180 130 L178 190 Q176 225 120 225 Q64 225 62 190 Z" fill="var(--surface-2)" stroke="var(--gold)" stroke-width="2"/>
+      <path d="M100 90 Q95 70 120 62 Q145 70 140 90" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/>
+      <ellipse cx="120" cy="60" rx="10" ry="6" fill="var(--rust)"/>
+      <path d="M55 145 Q30 150 32 175 Q34 195 58 192" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/>
+      <path d="M62 190 Q120 210 178 190" fill="none" stroke="var(--rust)" stroke-width="2" opacity="0.7"/>
+      <ellipse cx="120" cy="230" rx="46" ry="7" fill="var(--gold)" opacity="0.55"/>
+      <circle cx="90" cy="150" r="2" fill="var(--gold)" opacity="0.5"/>
+      <circle cx="150" cy="150" r="2" fill="var(--gold)" opacity="0.5"/>
+      <circle cx="120" cy="170" r="2" fill="var(--gold)" opacity="0.5"/>
+    </svg>
+  </div>
+</header>
+
+<section id="order">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Menu</span>
+      <h2>Build your order</h2>
+      <p>Pick what you're craving, adjust the quantity, and send it through — no account needed.</p>
+    </div>
+
+    <div class="menu-grid" id="menu"></div>
+
+    <div class="order-summary">
+      <h3>Your order</h3>
+      <p id="cart-empty">Nothing added yet — pick a few items above.</p>
+      <ul id="cart-lines" style="display:none;"></ul>
+      <div class="total-row" id="total-row" style="display:none;">
+        <span>Total</span>
+        <span id="total-amount">$0.00</span>
+      </div>
+      <div class="order-form">
+        <input type="text" id="order-name" placeholder="Your name">
+        <input type="text" id="order-note" placeholder="Any notes (e.g. oat milk, table 4)">
+        <button class="btn" id="place-order">Place order</button>
+      </div>
+      <p id="order-confirm"></p>
+    </div>
+  </div>
+</section>
+
+<section id="comments">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">From our regulars</span>
+      <h2>Leave a comment</h2>
+      <p>Tell us how your visit went — the good, the burnt, all of it.</p>
+    </div>
+
+    <form class="comment-form" id="comment-form">
+      <input type="text" id="comment-name" placeholder="Your name" required>
+      <textarea id="comment-text" placeholder="Share your thoughts..." required></textarea>
+      <button class="btn" type="submit" style="align-self:flex-start;">Post comment</button>
+    </form>
+
+    <p id="comments-empty">No comments yet — be the first to say something.</p>
+    <div id="comments-list"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Yehenew Coffee Shop — open daily, 7am–6pm.</span>
+    <span>
+      <a href="mailto:yehenewenawgaw777@gmail.com">yehenewenawgaw777@gmail.com</a>
+      &nbsp;·&nbsp;
+      <a href="tel:+0965392340">0965 392 340</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+  const MENU = [
+    { id:'brew',    name:'House Filter Brew', desc:'Rotating single-origin, brewed fresh every 30 minutes.', price:3.50 },
+    { id:'macch',   name:'Macchiato',          desc:'Double shot, a whisper of steamed milk.', price:4.00 },
+    { id:'latte',   name:'Honey Oat Latte',    desc:'Espresso, oat milk, a touch of wildflower honey.', price:5.25 },
+    { id:'cold',    name:'Cold Brew',          desc:'Steeped 18 hours, served over ice.', price:4.50 },
+    { id:'mocha',   name:'Dark Mocha',         desc:'70% cacao, espresso, steamed milk.', price:5.00 },
+    { id:'pastry',  name:'Butter Croissant',   desc:'Baked in-house each morning.', price:3.25 },
+  ];
+
+  const cart = {}; // id -> quantity
+  const menuEl = document.getElementById('menu');
+
+  function renderMenu(){
+    menuEl.innerHTML = MENU.map(item => `
+      <div class="item">
+        <div class="item-info">
+          <h3>${item.name}</h3>
+          <div class="desc">${item.desc}</div>
+          <div class="price">$${item.price.toFixed(2)}</div>
+        </div>
+        <div class="qty-row">
+          <button class="qty-btn" data-action="dec" data-id="${item.id}" aria-label="Decrease ${item.name} quantity">–</button>
+          <span class="qty-val" id="qty-${item.id}">0</span>
+          <button class="qty-btn" data-action="inc" data-id="${item.id}" aria-label="Increase ${item.name} quantity">+</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function updateCart(id, delta){
+    const current = cart[id] || 0;
+    const next = Math.max(0, current + delta);
+    if(next === 0){ delete cart[id]; } else { cart[id] = next; }
+    document.getElementById(`qty-${id}`).textContent = next;
+    renderSummary();
+  }
+
+  function renderSummary(){
+    const ids = Object.keys(cart);
+    const linesEl = document.getElementById('cart-lines');
+    const emptyEl = document.getElementById('cart-empty');
+    const totalRow = document.getElementById('total-row');
+
+    if(ids.length === 0){
+      linesEl.style.display = 'none';
+      totalRow.style.display = 'none';
+      emptyEl.style.display = 'block';
+      return;
+    }
+
+    emptyEl.style.display = 'none';
+    linesEl.style.display = 'block';
+    totalRow.style.display = 'flex';
+
+    let total = 0;
+    linesEl.innerHTML = ids.map(id => {
+      const item = MENU.find(m => m.id === id);
+      const lineTotal = item.price * cart[id];
+      total += lineTotal;
+      return `<li><span>${item.name} × ${cart[id]}</span><span>$${lineTotal.toFixed(2)}</span></li>`;
+    }).join('');
+
+    document.getElementById('total-amount').textContent = `$${total.toFixed(2)}`;
+  }
+
+  menuEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('.qty-btn');
+    if(!btn) return;
+    const id = btn.dataset.id;
+    const delta = btn.dataset.action === 'inc' ? 1 : -1;
+    updateCart(id, delta);
+  });
+
+  document.getElementById('place-order').addEventListener('click', () => {
+    const ids = Object.keys(cart);
+    const confirmEl = document.getElementById('order-confirm');
+    if(ids.length === 0){
+      confirmEl.style.display = 'block';
+      confirmEl.style.color = 'var(--rust)';
+      confirmEl.textContent = 'Add at least one item before placing your order.';
+      return;
+    }
+    const name = document.getElementById('order-name').value.trim() || 'Guest';
+    confirmEl.style.display = 'block';
+    confirmEl.style.color = 'var(--gold)';
+    confirmEl.textContent = `Thanks, ${name} \u2014 your order has been sent to the counter.`;
+
+    Object.keys(cart).forEach(id => updateCart(id, -cart[id]));
+    document.getElementById('order-name').value = '';
+    document.getElementById('order-note').value = '';
+  });
+
+  renderMenu();
+
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // Comments (in-memory for this session)
+  const comments = [];
+  const commentsList = document.getElementById('comments-list');
+  const commentsEmpty = document.getElementById('comments-empty');
+
+  function renderComments(){
+    if(comments.length === 0){
+      commentsEmpty.style.display = 'block';
+      commentsList.innerHTML = '';
+      return;
+    }
+    commentsEmpty.style.display = 'none';
+    commentsList.innerHTML = comments.map(c => `
+      <div class="comment">
+        <div class="who"><span>${escapeHtml(c.name)}</span><time>${c.time}</time></div>
+        <p>${escapeHtml(c.text)}</p>
+      </div>
+    `).join('');
+  }
+
+  document.getElementById('comment-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const nameEl = document.getElementById('comment-name');
+    const textEl = document.getElementById('comment-text');
+    const name = nameEl.value.trim();
+    const text = textEl.value.trim();
+    if(!name || !text) return;
+
+    comments.unshift({
+      name,
+      text,
+      time: new Date().toLocaleString([], { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' })
+    });
+    renderComments();
+    nameEl.value = '';
+    textEl.value = '';
+  });
+</script>
+
+</body>
+</html>
